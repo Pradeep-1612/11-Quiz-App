@@ -13,14 +13,21 @@ function reducer(state, action) {
   if (action.type === "NEW_QUESTION") {
     const prevQuizAnswerSheet = { ...state.quizAnswerSheet };
 
-    const status = action.payload ? "INCORRECT" : "SKIPPED";
+    const currentQsn = QUESTIONS.filter(
+      (item) => (item.id === state.activeQuestion)
+    )[0];
+    let status = "SKIPPED";
+    if (action.payload) {
+      status =
+        action.payload === currentQsn.answers[0] ? "CORRECT" : "INCORRECT";
+    }
     prevQuizAnswerSheet[state.activeQuestion] = {
       selectedOption: action.payload,
       status,
     };
     const nextAvailableQsns = QUESTIONS.filter(
-        (item) => !Object.keys(prevQuizAnswerSheet).includes(item.id)
-      );
+      (item) => !Object.keys(prevQuizAnswerSheet).includes(item.id)
+    );
     if (nextAvailableQsns.length === 0) {
       return {
         ...state,

@@ -14,12 +14,6 @@ export default function QuizResult() {
       totalQsns) *
       100
   );
-  const correctPercent = Math.round(
-    (Object.values(quizAnswerSheet).filter((item) => item.status === "CORRECT")
-      .length /
-      totalQsns) *
-      100
-  );
   const incorrectPercent = Math.round(
     (Object.values(quizAnswerSheet).filter(
       (item) => item.status === "INCORRECT"
@@ -27,6 +21,8 @@ export default function QuizResult() {
       totalQsns) *
       100
   );
+
+  const correctPercent = 100 - skippedPercent - incorrectPercent;
 
   return (
     <section id="summary">
@@ -55,13 +51,14 @@ export default function QuizResult() {
             : "user-answer skipped";
 
         return (
-            
           <ol key={index}>
             <h3>{index + 1}</h3>
             <p className="question">
               {QUESTIONS.find((item) => item.id === key).text}
             </p>
-            <p className={classes}>{quizAnswerSheet[key].selectedOption}</p>
+            <p className={classes}>
+              {quizAnswerSheet[key].selectedOption ?? "Skipped"}
+            </p>
           </ol>
         );
       })}

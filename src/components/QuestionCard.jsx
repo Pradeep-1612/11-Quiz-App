@@ -9,11 +9,12 @@ export default function QuestionCard() {
   const currentQsn = QUESTIONS.filter(
     (item) => item.id === activeQuestion
   )[0];
+  const timeout = 10000;
 
   useEffect(() => {
     const timer = setTimeout(() => {
         shiftToNextQuestion(undefined);
-    }, 3000);
+    }, timeout);
     return () => {
       clearTimeout(timer);
     };
@@ -22,7 +23,7 @@ export default function QuestionCard() {
     <>
       <section key={currentQsn.id} id="quiz">
         <section id="question">
-          <ProgressBar/>
+          <ProgressBar timeout={timeout}/>
           <h2>{currentQsn.text}</h2>
         </section>
         <section id="answers">
